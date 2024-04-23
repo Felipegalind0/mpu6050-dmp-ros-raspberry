@@ -20,6 +20,10 @@ Image Source: [MPU6050 | Live Graph | Raspberry Pi](https://sparkfun.hackster.io
 
 ## Installation
 
+0. **Install IMU Tools
+
+https://github.com/CCNYRoboticsLab/imu_tools
+
 1. **Clone the Repository:**
 
 Navigate to your catkin workspace's `src` directory and clone the repository:
