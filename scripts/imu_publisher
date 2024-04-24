@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+
 import rospy
 
 from mpu6050_dmp_ros.MPU6050 import MPU6050
@@ -10,22 +11,24 @@ if __name__ == "__main__":
     rospy.init_node("imu_publisher")
 
     # TODO: create a simple procedure to calculate and recopilate the offset values (copy/paste-able)
-    topic_name = rospy.get_param('~topic_name', 'imu_data')
-    frame_id = rospy.get_param('~frame_id', 'base_link')
-    i2c_bus = rospy.get_param('~i2c_bus', 1)
-    device_address = rospy.get_param('~device_address', 0x68)
-    x_accel_offset = rospy.get_param('~x_accel_offset', 0)
-    y_accel_offset = rospy.get_param('~y_accel_offset', 0)
-    z_accel_offset = rospy.get_param('~z_accel_offset', 0)
-    x_gyro_offset = rospy.get_param('~x_gyro_offset', 0)
-    y_gyro_offset = rospy.get_param('~y_gyro_offset', 0)
-    z_gyro_offset = rospy.get_param('~z_gyro_offset', 0)
+    topic_name = rospy.get_param('~/imu_publisher/topic_name', 'imu_data')
+    frame_id = rospy.get_param('~/imu_publisher/frame_id', 'base_link')
+    i2c_bus = rospy.get_param('~/imu_publisher/i2c_bus', 1)
+    device_address = rospy.get_param('~/imu_publisher/device_address', 0x68)
+    x_accel_offset = rospy.get_param('~/imu_publisher/x_accel_offset', 0)
+    y_accel_offset = rospy.get_param('~/imu_publisher/y_accel_offset', 0)
+    z_accel_offset = rospy.get_param('~/imu_publisher/z_accel_offset', 0)
+    x_gyro_offset = rospy.get_param('~/imu_publisher/x_gyro_offset', 0)
+    y_gyro_offset = rospy.get_param('~/imu_publisher/y_gyro_offset', 0)
+    z_gyro_offset = rospy.get_param('~/imu_publisher/z_gyro_offset', 0)
 
     pub = rospy.Publisher(topic_name, Imu, queue_size=10)
     rate = rospy.Rate(10)
 
+    print(f"mpu = MPU6050(i2c_bus={i2c_bus}, device_address={device_address}, x_accel_offset={x_accel_offset}, y_accel_offset={y_accel_offset}, z_accel_offset={z_accel_offset}, x_gyro_offset={x_gyro_offset}, y_gyro_offset={y_gyro_offset}, z_gyro_offset={z_gyro_offset}, False)")
     mpu = MPU6050(i2c_bus, device_address, x_accel_offset, y_accel_offset,
                   z_accel_offset, x_gyro_offset, y_gyro_offset, z_gyro_offset, False)
+    
 
     mpu.dmp_initialize()
     mpu.set_DMP_enabled(True)
@@ -35,6 +38,7 @@ if __name__ == "__main__":
     FIFO_count = mpu.get_FIFO_count()
 
     FIFO_buffer = [0]*64
+
 
     try:
         while not rospy.is_shutdown():
